@@ -1,0 +1,69 @@
+﻿@page "/Account/Manage"
+@rendermode InteractiveServer
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Identity
+@using HemoStat.Data
+
+@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+@inject IdentityUserAccessor UserAccessor
+@inject IdentityRedirectManager RedirectManager
+@inject IHttpContextAccessor HttpContextAccessor
+<PageTitle>Profile</PageTitle>
+
+<div class="block-content">
+    <StatusMessage Message="@message" />
+    <EditForm Model="Input" FormName="profile" OnValidSubmit="OnValidSubmitAsync" method="post" Context="profileform">
+        <DataAnnotationsValidator />
+        <ValidationSummary class="text-danger" role="alert" />
+        <DxFormLayout CaptionPosition=@CaptionPosition.Vertical>
+            <DxFormLayoutItem Caption="Username" ColSpanMd="12" BeginRow="true">
+                <DxTextBox @bind-Text="@username" Enabled="false" />
+            </DxFormLayoutItem>
+            <DxFormLayoutItem Caption="Phone number" ColSpanMd="12" BeginRow="true">
+                <DxMaskedInput ShowValidationIcon="true" name="Input.PhoneNumber" @bind-Value="Input.PhoneNumber" Mask="(999)000-0000"></DxMaskedInput>
+                <ValidationMessage For="() => Input.PhoneNumber" class="text-danger"></ValidationMessage>
+            </DxFormLayoutItem>
+            <DxFormLayoutItem ColSpanMd="12" BeginRow="true">
+                <DxButton CssClass="w-100" SubmitFormOnClick="true" Text="Save"></DxButton>
+            </DxFormLayoutItem>
+        </DxFormLayout>
+    </EditForm>
+</div>
+
+@code {
+    private ApplicationUser user = default!;
+    private string? username;
+    private string? phoneNumber;
+
+    private HttpContext HttpContext => HttpContextAccessor.HttpContext;
+    string message = "";
+
+    [SupplyParameterFromForm]
+    private InputModel Input { get; set; } = new();
+
+    protected override async Task OnInitializedAsync() {
+        user = await UserAccessor.GetRequiredUserAsync(HttpContext);
+        username = await UserManager.GetUserNameAsync(user);
+        phoneNumber = await UserManager.GetPhoneNumberAsync(user);
+
+        Input.PhoneNumber ??= phoneNumber;
+    }
+
+    private async Task OnValidSubmitAsync() {
+        if(Input.PhoneNumber != phoneNumber) {
+            var setPhoneResult = await UserManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
+            if(!setPhoneResult.Succeeded) {
+                message = "Error: Failed to set phone number.";
+            }
+        }
+
+        message = "Your profile has been updated";
+    }
+
+    private sealed class InputModel {
+        [Phone]
+        [Display(Name = "Phone number")]
+        public string? PhoneNumber { get; set; }
+    }
+}

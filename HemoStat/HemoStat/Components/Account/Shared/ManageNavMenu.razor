@@ -1,0 +1,30 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using HemoStat.Data
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+<DxTabs>
+    <DxTab TabIconCssClass="tab-icon icon-profile" Text="Profile" Click="@(() => NavigationManager.NavigateTo("Account/Manage"))">
+    </DxTab>
+    <DxTab TabIconCssClass="tab-icon icon-email" Text="Email" Click="@(() => NavigationManager.NavigateTo("Account/Manage/Email"))">
+    </DxTab>
+    <DxTab TabIconCssClass="tab-icon icon-password" Text="Password" Click="@(() => NavigationManager.NavigateTo("Account/Manage/ChangePassword"))">
+    </DxTab>
+    @if(hasExternalLogins) {
+        <DxTab TabIconCssClass="tab-icon icon-external" Text="External logins" Click="@(() => NavigationManager.NavigateTo("Account/Manage/ExternalLogins"))">
+        </DxTab>
+    }
+    <DxTab TabIconCssClass="tab-icon icon-two-factor" Text="Two-factor authentication" Click="@(() => NavigationManager.NavigateTo("Account/Manage/TwoFactorAuthentication"))">
+    </DxTab>
+    <DxTab TabIconCssClass="tab-icon icon-personal" Text="Personal Data" Click="@(() => NavigationManager.NavigateTo("Account/Manage/PersonalData"))">
+    </DxTab>
+</DxTabs>
+
+@code {
+    private bool hasExternalLogins;
+
+    protected override async Task OnInitializedAsync() {
+        hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+    }
+}

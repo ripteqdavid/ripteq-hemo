@@ -1,0 +1,22 @@
+﻿@using System.ComponentModel.DataAnnotations
+@rendermode InteractiveServer
+
+<DxFormLayout CaptionPosition=@CaptionPosition.Vertical>
+    <DxFormLayoutItem Caption="Authenticator code" ColSpanMd="12" BeginRow="true">
+        <DxTextBox name="Input.RecoveryCode" ShowValidationIcon="true" CssClass="large-input" @bind-Text="Input.RecoveryCode" />
+    </DxFormLayoutItem>
+    <DxFormLayoutItem ColSpanMd="12" BeginRow="true">
+        <DxButton CssClass="w-100" SubmitFormOnClick="true" Text="Log in"></DxButton>
+    </DxFormLayoutItem>
+</DxFormLayout>
+
+@code {
+    [Parameter] public InputModel Input { get; set; }
+
+    public class InputModel {
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "Recovery Code")]
+        public string RecoveryCode { get; set; } = "";
+    }
+}

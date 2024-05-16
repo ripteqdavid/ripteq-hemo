@@ -1,0 +1,109 @@
+﻿@rendermode InteractiveServer
+@* @rendermode @(new InteractiveServerRenderMode(false)) *@
+@* @attribute [StreamRendering] *@
+
+<style>
+    .bi-navmenu {
+    font-size: 1.1rem;
+    width: 1rem;
+    height: 1rem;
+    color: #b0b0b0; /* Change to a lighter or muted color */
+    background-color: transparent;
+    display: block;
+    text-align: center;
+    line-height: normal;
+    margin-left: 0.9rem;
+</style>
+
+<style>
+.bi-navmenu-group {
+    font-size: 1.5em; /* Increase font size */
+    width: 1.25rem; /* Increase width */
+    height: 1.25rem; /* Increase height */
+    color: var(--dxbl-btn-color); /* Consider changing color for more emphasis */
+    background-color: var(--dxbl-highlight-color); /* Add a background color */
+    display: block;
+    text-align: center;
+    line-height: normal;
+    margin-left: 0.5rem;
+    border: 2px solid var(--dxbl-accent-color); /* Add a border */
+    box-shadow: 0px 0px 5px var(--dxbl-shadow-color); /* Add a shadow */
+}
+</style>
+
+<div id="sidebar">
+  <DxGridLayout CssClass="page-layout" RowSpacing="1.5rem">
+    <Rows>
+      <DxGridLayoutRow Areas="header menu-button" Height="auto"></DxGridLayoutRow>
+      <DxGridLayoutRow Areas="navigation navigation"></DxGridLayoutRow>
+      <DxGridLayoutRow Areas="footer footer" Height="auto"></DxGridLayoutRow>
+    </Rows>
+    <Columns>
+      <DxGridLayoutColumn></DxGridLayoutColumn>
+      <DxGridLayoutColumn Width="auto"></DxGridLayoutColumn>
+    </Columns>
+    <Items>
+      <DxGridLayoutItem Area="header" CssClass="sidebar-header">
+        <Template>
+          <img class="logo" src="images/logo.svg" alt="HemoStat" />
+        </Template>
+      </DxGridLayoutItem>
+      <DxGridLayoutItem Area="menu-button" CssClass="sidebar-header menu-button-container">
+        <Template>
+          <div class="menu-button" onclick="document.getElementById('sidebar').classList.toggle('expanded')"></div>
+        </Template>
+      </DxGridLayoutItem>
+      <DxGridLayoutItem Area="navigation" CssClass="layout-item">
+        <Template>
+          <div onclick="document.getElementById('sidebar').classList.remove('expanded')">
+
+            <DxMenu Orientation="@Orientation.Vertical" CssClass="menu" DisplayMode="MenuDisplayMode.Mobile" SubMenuCssClass="my-dropdown" CloseMenuOnItemClick="false"
+                DropDownActionMode="MenuDropDownActionMode.Click"
+                ItemsPosition="ItemPosition.Start">  
+            <Items>
+                <DxMenuItem NavigateUrl="/" Text="Home" CssClass="menu-item" IconCssClass="bi bi-house-door-fill bi-navmenu-group" />
+                <DxMenuItem NavigateUrl="/counter" Text="Daily Jobs" CssClass="menu-item" IconCssClass="bi bi-calendar-date bi-navmenu"></DxMenuItem>
+
+                <DxMenuItem NavigateUrl="/counter" Text="Counter" CssClass="menu-item" IconCssClass="icon counter-icon"></DxMenuItem>
+                <DxMenuItem NavigateUrl="/weather" Text="Weather" CssClass="menu-item" IconCssClass="icon weather-icon"></DxMenuItem>
+                <DxMenuItem NavigateUrl="/Account/Manage" Text="Settings" CssClass="menu-item" IconCssClass="icon settings-icon"></DxMenuItem>
+
+                <DxMenuItem NavigateUrl="/jobs/new" Text="New Job" CssClass="menu-item" IconCssClass="bi bi-plus-circle-fill bi-navmenu"></DxMenuItem>
+                <DxMenuItem Text="Jobs" CssClass="menu-item" IconCssClass="bi bi-calendar-date bi-navmenu-group" >
+                    <Items>
+                            <DxMenuItem NavigateUrl="/test" Text="Test" CssClass="menu-item" IconCssClass="bi bi-file-earmark-bar-graph bi-navmenu"></DxMenuItem>
+                            <DxMenuItem NavigateUrl="/weather" Text="Exceptions" CssClass="menu-item" IconCssClass="bi bi-filter-circle bi-navmenu"></DxMenuItem>
+                            <DxMenuItem NavigateUrl="/Jobs/JobList" Text="Search" CssClass="menu-item" IconCssClass="bi bi-search bi-navmenu"></DxMenuItem>
+                            <DxMenuItem NavigateUrl="/weather" Text="Locations" CssClass="menu-item" IconCssClass="bi bi-map bi-navmenu"></DxMenuItem>
+                            <DxMenuItem NavigateUrl="/weather" Text="Scheduled" CssClass="menu-item" IconCssClass="bi bi-calendar-range bi-navmenu"></DxMenuItem>
+                            <DxMenuItem NavigateUrl="/weather" Text="SMS" CssClass="menu-item" IconCssClass="bi bi-chat bi-navmenu"></DxMenuItem>
+                            <DxMenuItem NavigateUrl="/weather" Text="Notifications" CssClass="menu-item" IconCssClass="bi bi-bell bi-navmenu"></DxMenuItem>
+
+                    </Items>
+                </DxMenuItem>
+
+              </Items>
+            </DxMenu>
+          </div>
+        </Template>
+      </DxGridLayoutItem>
+      <DxGridLayoutItem Area="footer" CssClass="footer">
+        <Template>
+          <NavLink href="/tmlive" class="button-link">
+              <DxButton Text="TM Live" RenderStyleMode="@ButtonRenderStyleMode.Text" CssClass="footer-button" RenderStyle="@ButtonRenderStyle.Light" IconCssClass="bi bi-truck"></DxButton>
+            </NavLink>
+            <NavLink href="/drive" class="button-link">
+              <DxButton Text="TM Drive" RenderStyleMode="@ButtonRenderStyleMode.Text" CssClass="footer-button" RenderStyle="@ButtonRenderStyle.Light" IconCssClass="bi bi-car-front-fill"></DxButton>
+            </NavLink>
+        </Template>
+      </DxGridLayoutItem>
+    </Items>
+  </DxGridLayout>
+</div>
+
+@code {
+    string SelectedGroup = "none";
+    void SelectionChanged(TreeViewNodeEventArgs e) {
+        SelectedGroup = e.NodeInfo?.Text;
+    }
+}

@@ -1,0 +1,23 @@
+﻿@using System.ComponentModel.DataAnnotations
+@rendermode InteractiveServer
+
+<DxFormLayout CaptionPosition=@CaptionPosition.Vertical>
+    <DxFormLayoutItem Caption="Email" ColSpanMd="12" BeginRow="true">
+        <DxTextBox name="Input.Email" @bind-Text="Input.Email" />
+    </DxFormLayoutItem>
+    <DxFormLayoutItem ColSpanMd="12" BeginRow="true">
+        <DxButton CssClass="w-100" SubmitFormOnClick="true" Text="Register"></DxButton>
+    </DxFormLayoutItem>
+</DxFormLayout>
+
+@code {
+    [Parameter] public InputModel Input { get; set; }
+
+
+    public class InputModel {
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; } = "";
+    }
+ 
+}

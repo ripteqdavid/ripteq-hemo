@@ -1,0 +1,21 @@
+﻿@page "/test"
+@rendermode @(new InteractiveServerRenderMode(false))
+
+<h3>Test</h3>
+
+<p>Environment: @environmentName</p>
+<p>Version: @versionNumber</p>
+
+@code {
+    [Inject] public IConfiguration configuration { get; set; }
+
+    string environmentName = "";
+    string versionNumber = "0.0.0";
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        environmentName = configuration.GetValue<string>("Settings:Environment") ?? "Unknown";
+        versionNumber = configuration.GetValue<string>("Settings:Version") ?? "Unknown";
+    }
+}

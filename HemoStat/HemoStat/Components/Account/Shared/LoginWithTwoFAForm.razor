@@ -1,0 +1,29 @@
+﻿@using System.ComponentModel.DataAnnotations
+@rendermode InteractiveServer
+
+<DxFormLayout CaptionPosition=@CaptionPosition.Vertical>
+    <DxFormLayoutItem Caption="Authenticator code" ColSpanMd="12" BeginRow="true">
+        <DxMaskedInput name="Input.TwoFactorCode" CssClass="large-input" @bind-Value="Input.TwoFactorCode" Mask="000 000" />
+    </DxFormLayoutItem>
+    <DxFormLayoutItem ColSpanMd="12" BeginRow="true">
+        <DxCheckBox name="Input.RememberMachine" InputId="rememberme" @bind-Checked="Input.RememberMachine">Remember this machine</DxCheckBox>
+    </DxFormLayoutItem>
+    <DxFormLayoutItem ColSpanMd="12" BeginRow="true">
+        <DxButton CssClass="w-100" SubmitFormOnClick="true" Text="Log in"></DxButton>
+    </DxFormLayoutItem>
+</DxFormLayout>
+
+@code {
+    [Parameter] public LoginModel Input { get; set; }
+
+    public class LoginModel {
+        [Required]
+        [StringLength(7, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+        [DataType(DataType.Text)]
+        [Display(Name = "Authenticator code")]
+        public string? TwoFactorCode { get; set; }
+
+        [Display(Name = "Remember this machine")]
+        public bool RememberMachine { get; set; }
+    }
+}

@@ -1,0 +1,34 @@
+﻿@using System.ComponentModel.DataAnnotations
+@rendermode InteractiveServer
+
+<DxFormLayout CaptionPosition=@CaptionPosition.Vertical>
+    <DxFormLayoutItem Caption="Email" ColSpanMd="12" BeginRow="true">
+        <DxTextBox name="Input.Email" ShowValidationIcon="true" @bind-Text="Input.Email" />
+    </DxFormLayoutItem>
+    <DxFormLayoutItem Caption="Password" ColSpanMd="12" BeginRow="true">
+        <DxTextBox name="Input.Password" ShowValidationIcon="true" @bind-Text="Input.Password" Password="true" />
+    </DxFormLayoutItem>
+    <DxFormLayoutItem ColSpanMd="12" BeginRow="true">
+        <DxCheckBox name="Input.RememberMe" InputId="rememberme" @bind-Checked="Input.RememberMe">Remember me?</DxCheckBox>
+    </DxFormLayoutItem>
+    <DxFormLayoutItem ColSpanMd="12" BeginRow="true">
+        <DxButton CssClass="w-100" SubmitFormOnClick="true" Text="Login"></DxButton>
+    </DxFormLayoutItem>
+</DxFormLayout>
+
+@code {
+    [Parameter] public LoginModel Input { get; set; }
+
+    public class LoginModel {
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; } = "";
+
+        [Required]
+        [DataType(DataType.Password)]
+        public string Password { get; set; } = "";
+
+        [Display(Name = "Remember me?")]
+        public bool RememberMe { get; set; }
+    }
+}

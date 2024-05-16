@@ -1,0 +1,54 @@
+﻿.page {
+    height: 100%;
+    font-family: var(--bs-font-sans-serif);
+}
+
+::deep .icon {
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    width: 1rem;
+    height: 1rem;
+    background-repeat: no-repeat;
+    background-color: var(--dxbl-btn-color);
+}
+
+::deep .icon-back {
+    -webkit-mask-image: url("images/back.svg");
+    mask-image: url("images/back.svg");
+}
+::deep .icon-log-in {
+    -webkit-mask-image: url("images/account/log-in.svg");
+    mask-image: url("images/account/log-in.svg");
+}
+
+::deep .icon-log-out {
+    -webkit-mask-image: url("images/account/log-out.svg");
+    mask-image: url("images/account/log-out.svg");
+}
+
+::deep .icon-user {
+    -webkit-mask-image: url("images/account/user.svg");
+    mask-image: url("images/account/user.svg");
+}
+
+::deep .content {
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+::deep .menu-button:hover .icon {
+    background-color: var(--dxbl-btn-hover-color);
+}
+
+@media (max-width: 768px) {
+    ::deep .layout-sidebar {
+        grid-area: header / header / header / header !important;
+    }
+}
+
+@media (max-width: 500px) {
+    ::deep .menu-button .dxbl-btn-caption {
+        display: none;
+    }
+}

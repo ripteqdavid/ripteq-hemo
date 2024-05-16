@@ -1,0 +1,28 @@
+﻿@rendermode InteractiveServer
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Identity
+@using HemoStat.Data
+
+<DxFormLayout CaptionPosition=@CaptionPosition.Vertical>
+    @if(RequirePassword) {
+        <DxFormLayoutItem Caption="Password" BeginRow="true" ColSpanMd="12">
+            <DxTextBox name="Input.Password" @bind-Text="Input.Password" Password="true"></DxTextBox>
+        </DxFormLayoutItem>
+    }
+    <DxFormLayoutItem ColSpanMd="12" BeginRow="true">
+        <DxButton CssClass="w-100" SubmitFormOnClick="true" RenderStyle="ButtonRenderStyle.Danger" Text="Delete data and close my account"></DxButton>
+    </DxFormLayoutItem>
+</DxFormLayout>
+
+@code {
+    [Parameter]
+    public bool RequirePassword { get; set; }
+
+    [Parameter]
+    public InputModel Input { get; set; } = new();
+
+    public class InputModel {
+        [DataType(DataType.Password)]
+        public string Password { get; set; } = "";
+    }
+}

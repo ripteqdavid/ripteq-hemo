@@ -1,0 +1,39 @@
+﻿@using System.ComponentModel.DataAnnotations
+@rendermode InteractiveServer
+
+<DxFormLayout CaptionPosition=@CaptionPosition.Vertical>
+    <DxFormLayoutItem Caption="Email" ColSpanMd="12" BeginRow="true">
+        <DxTextBox name="Input.Email" ShowValidationIcon="true" @bind-Text="Input.Email" />
+    </DxFormLayoutItem>
+    <DxFormLayoutItem Caption="Password" ColSpanMd="12" BeginRow="true">
+        <DxTextBox name="Input.Password" ShowValidationIcon="true" @bind-Text="Input.Password" Password="true" />
+    </DxFormLayoutItem>
+    <DxFormLayoutItem Caption="Confirm Password" ColSpanMd="12" BeginRow="true">
+        <DxTextBox name="Input.ConfirmPassword" ShowValidationIcon="true" @bind-Text="Input.ConfirmPassword" Password="true" />
+    </DxFormLayoutItem>
+    <DxFormLayoutItem ColSpanMd="12" BeginRow="true">
+        <DxButton CssClass="w-100" SubmitFormOnClick="true" Text="Register"></DxButton>
+    </DxFormLayoutItem>
+</DxFormLayout>
+
+@code {
+    [Parameter] public InputModel Input { get; set; }
+
+    public sealed class InputModel {
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; } = "";
+
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Password")]
+        public string Password { get; set; } = "";
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirm password")]
+        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        public string ConfirmPassword { get; set; } = "";
+    }
+}

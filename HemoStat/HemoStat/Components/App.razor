@@ -1,0 +1,50 @@
+﻿@using Microsoft.AspNetCore.Mvc.ViewFeatures
+@inject IFileVersionProvider FileVersionProvider
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+    <link href=@AppendVersion("_content/DevExpress.Blazor.Themes/office-white.bs5.min.css") rel="stylesheet" />
+
+    @DxResourceManager.RegisterScripts()
+    <link href=@AppendVersion("css/site.css") rel="stylesheet" />
+    <link href=@AppendVersion("HemoStat.styles.css") rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script>
+        window.downloadFileFromStream = async (fileName, contentStreamReference, mimeType = 'application/octet-stream') => {
+            const arrayBuffer = await contentStreamReference.arrayBuffer();
+            const blob = new Blob([arrayBuffer], { type: mimeType });  // MIME type is now a parameter
+            const url = URL.createObjectURL(blob);
+            // Decide what to do based on the type of the file
+            if (mimeType === 'application/pdf') {
+                // For PDF files, open in a new tab
+                window.open(url, '_blank');
+            } else {
+                // For other types of files, possibly download them
+                const anchorElement = document.createElement('a');
+                anchorElement.href = url;
+                anchorElement.download = encodeURIComponent(fileName) ?? '';
+                anchorElement.click();
+                anchorElement.remove();
+            }
+
+            URL.revokeObjectURL(url);
+        }
+</script>
+    <HeadOutlet />
+    <link href=@AppendVersion("_content/DevExpress.Blazor.RichEdit/dx-blazor-richedit.css") rel="stylesheet" />
+</head>
+<body>
+    <Routes></Routes>
+    <script src="~/timezone.js"></script>
+    <script src="_framework/blazor.web.js"></script>
+</body>
+
+</html>
+
+@code{
+    private string AppendVersion(string path) => FileVersionProvider.AddFileVersionToPath("/", path);
+}
